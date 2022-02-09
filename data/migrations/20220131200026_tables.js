@@ -10,7 +10,7 @@ exports.up = function (knex) {
     .createTable("wine", (tbl) => {
       tbl.increments();
       tbl.string("name", 128).notNullable();
-      tbl.binary("label_image", 128);
+      tbl.string("label_image", 128);
       tbl.integer("year").unsigned();
       tbl.string("color", 128).notNullable();
       tbl.string("vineyard", 128).notNullable();
@@ -34,9 +34,9 @@ exports.up = function (knex) {
       tbl.primary(["user_id", "wine_id"]);
       tbl.boolean("favorite");
       tbl.boolean("try", 128);
-      tbl.integer("").unsigned();
+      tbl.integer("rating").unsigned();
       tbl.string("notes", 128);
-      tbl.string("", 128).notNullable();
+      tbl.boolean("drunk", 128);
     })
     .createTable("following", (tbl) => {
       tbl
