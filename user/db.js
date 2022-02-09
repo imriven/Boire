@@ -22,7 +22,7 @@ function getWineByUserId(id) {
 }
 
 //sql quick guide
-// function getWineByUserId(id) {
+// function name(id) {
 //   return db("(join table) as j")
 //     .join("second table as s", "s.id", "j.s_id")
 //     .select("fields from second table.*")
