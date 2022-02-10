@@ -9,9 +9,9 @@ module.exports = {
 
 function getFollowersByUserId(id) {
   return db("following as f") 
-    .join("follower as er", "er.id", "f.er_id")
-    .select("er.*")
-    .where("f.id", id);
+    .join("user as u", "u.id", "f.following_id")
+    .select("u.id", "u.first_name")
+    .where("f.follower_id", id);
 }
 
 function getWineByUserId(id) {

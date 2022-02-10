@@ -15,7 +15,7 @@ router.get("/:id/wine", (req, res) => {
     );
 });
 
-router.get("/:id/followers", (req, res) => {
+router.get("/:id/following", (req, res) => {
   db.getFollowersByUserId(req.params.id)
     .then((result) => {
       if (!result) {
