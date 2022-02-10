@@ -9,18 +9,19 @@ router.post("/register", (req, res) => {
   const user = req.body;
   const hash = bcrypt.hashSync(user.password, 14);
   user.password = hash;
-  db.insert(user)
+  db.insertUser(user)
     .then((id) => res.status(201).send())
     .catch((err) =>
       res.status(500).json({ error: `error registering user, ${err}` })
     );
 });
 
-router.post("/password", (req, res) => {
-  const user = req.body;
-  const hash = bcrypt.hashSync(user.password, 14);
-  res.status(200).json({ hash });
-});
+// used to hash passwords in seeds
+// router.post("/password", (req, res) => {
+//   const user = req.body;
+//   const hash = bcrypt.hashSync(user.password, 14);
+//   res.status(200).json({ hash });
+// });
 
 router.post("/login", (req, res) => {
   const credentials = req.body;
@@ -49,5 +50,5 @@ function generateToken(user) {
   // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
-
+//Michelagelo_sBeard12345
 module.exports = router;

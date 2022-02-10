@@ -4,8 +4,7 @@
  */
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex("user").then(function () {
-    knex.raw("TRUNCATE TABLE user CASCADE");
+  return knex("user").del().then(function () {
     // Inserts seed entries
     return knex("user").insert([
       {
@@ -40,7 +39,7 @@ exports.seed = function (knex) {
         email: "hermes_dexter_conrad@outlook.com",
         first_name: "Hermes",
         password:
-          "limboChampion$2a$14$yE9jSlIkUDVh12QWmBY8gu.01J5PXEl0i7SxZWcypeRqmvIoFU0A2467!", // limboChampion467!
+          "$2a$14$yE9jSlIkUDVh12QWmBY8gu.01J5PXEl0i7SxZWcypeRqmvIoFU0A2467!", // limboChampion467!
         zip_code: 10015,
       },
     ]);

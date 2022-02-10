@@ -1,24 +1,8 @@
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets");
-const bcrypt = require("bcryptjs");
-const db = require("../story/storyDb")
 
 
 
-const validateStoryId = (req, res, next) => {
-  db.getById(req.params.id)
-    .then((result) => {
-      if (result) {
-        req.story = result;
-        next();
-      } else {
-        res.status(400).json({ message: "invalid story id" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: "error connecting to database" });
-   });
-}
 
 const validateLoggedIn = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -36,12 +20,7 @@ const validateLoggedIn = (req, res, next) => {
   }
 }
 
-const validateUserEditStory = (req, res, next) => {
-  if (req.token.subject !== req.story.user_id) {
-    return res.status(403).json({error: "User doesn't own this story"});
-  }
-  next();
-};
+
 
 const validateUserEditSelf = (req, res, next) => {
   if (req.token.subject !== Number(req.params.id)) {
@@ -51,8 +30,6 @@ const validateUserEditSelf = (req, res, next) => {
 };
 
 module.exports = {
-  validateStoryId,
   validateLoggedIn,
   validateUserEditSelf,
-  validateUserEditStory
 }

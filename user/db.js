@@ -6,6 +6,7 @@ module.exports = {
   getWineByUserId,
   getFollowersByUserId,
   getByEmail,
+  insertUser,
 };
 
 function getFollowersByUserId(id) {
@@ -33,6 +34,11 @@ function getWineByUserId(id) {
 //     .select("fields from second table.*")
 //     .where("j.id", id);
 // }
+
+
+function insertUser(user) {
+  return db("user").insert(user);
+}
 
 function getAll() {
   return db("user");
