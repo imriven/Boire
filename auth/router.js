@@ -24,7 +24,7 @@ router.post("/password", (req, res) => {
 
 router.post("/login", (req, res) => {
   const credentials = req.body;
-  db.getByUsername(credentials.username)
+  db.getByEmail(credentials.email)
     .then((user) => {
       if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
         return res.status(401).json({ error: "Incorrect credentials" });
@@ -39,7 +39,7 @@ router.post("/login", (req, res) => {
 function generateToken(user) {
   const payload = {
     subject: user.id, // sub in payload is what the token is about
-    username: user.username,
+    email: user.email,
   };
 
   const options = {

@@ -5,6 +5,7 @@ module.exports = {
   getById,
   getWineByUserId,
   getFollowersByUserId,
+  getByEmail,
 };
 
 function getFollowersByUserId(id) {
@@ -12,6 +13,10 @@ function getFollowersByUserId(id) {
     .join("user as u", "u.id", "f.following_id")
     .select("u.id", "u.first_name")
     .where("f.follower_id", id);
+}
+
+function getByEmail(email) {
+  return db("user").where({ email }).first();
 }
 
 function getWineByUserId(id) {
