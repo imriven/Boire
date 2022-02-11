@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../user/db");
 const bcrypt = require("bcryptjs");
-const router = express.Router();c
+const router = express.Router();
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets.js");
 
@@ -9,7 +9,7 @@ router.post("/register", (req, res) => {
   const user = req.body;
   const hash = bcrypt.hashSync(user.password, 14);
   user.password = hash;
-  db.insert(user)
+  db.insertUser(user)
     .then((id) => res.status(201).send())
     .catch((err) =>
       res.status(500).json({ error: `error registering user, ${err}` })

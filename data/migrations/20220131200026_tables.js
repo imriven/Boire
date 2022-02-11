@@ -3,9 +3,11 @@ exports.up = function (knex) {
     .createTable("user", (tbl) => {
       tbl.increments();
       tbl.string("email", 128).notNullable();
-      tbl.string("first_name", 128).notNullable();
+      tbl.string("name", 128).notNullable();
       tbl.string("password", 128).notNullable();
       tbl.string("zip_code", 128);
+      tbl.boolean("admin", 128);
+      tbl.boolean("moderator", 128);
     })
     .createTable("wine", (tbl) => {
       tbl.increments();

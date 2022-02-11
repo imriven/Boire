@@ -21,13 +21,13 @@ const validateLoggedIn = (req, res, next) => {
 }
 
 
-
-const validateUserEditSelf = (req, res, next) => {
-  if (req.token.subject !== Number(req.params.id)) {
-    return res.status(403).json({ error: "User only able to edit themselves" });
-  }
-  next();
-};
+// I don't think we need this middleware?
+// const validateUserEditSelf = (req, res, next) => {
+//   if (req.token.subject !== Number(req.params.id)) {
+//     return res.status(403).json({ error: "User only able to edit themselves" });
+//   }
+//   next();
+// };
 
 module.exports = {
   validateLoggedIn,
