@@ -7,6 +7,7 @@ module.exports = {
   getFollowersByUserId,
   getByEmail,
   insertUser,
+  updateUserProfile,
 };
 
 function getFollowersByUserId(id) {
@@ -38,6 +39,10 @@ function getWineByUserId(id) {
 
 function insertUser(user) {
   return db("user").insert(user);
+}
+
+function updateUserProfile(id, changes) {
+  return db("user").where({ id }).update(changes);
 }
 
 function getAll() {

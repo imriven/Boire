@@ -2,7 +2,6 @@ const router = require("express").Router();
 const db = require("./db");
 const {
   validateLoggedIn,
-  validateUserEditSelf,
 } = require("../auth/middleware");
 
 router.get("/:id/wine", (req, res) => {
@@ -52,6 +51,24 @@ router.get("/following", validateLoggedIn, (req, res) => {
 //       );
 //   }
 // );
+
+router.put(
+  "/:id",
+  validateLoggedIn,
+  (req, res) => {
+    db.updateUserProfile(Number(req.params.id), req.body)
+      .then((result) => {
+        if (result === 1) {
+          res.status(202).send();
+        } else {
+          res.status(500).json({ error: "Error Updating Profile" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "error connecting to database" });
+      });
+  }
+);
 
 router.get("/:id", (req, res) => {
   db.getById(req.params.id)
