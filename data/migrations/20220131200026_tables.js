@@ -11,7 +11,7 @@ exports.up = function (knex) {
     })
     .createTable("wine", (tbl) => {
       tbl.increments();
-      tbl.string("name", 128).notNullable();
+      tbl.string("name", 128);
       tbl.string("label_image", 128);
       tbl.integer("year").unsigned();
       tbl.string("color", 128).notNullable();
