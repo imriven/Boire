@@ -53,10 +53,10 @@ router.get("/following", validateLoggedIn, (req, res) => {
 // );
 
 router.put(
-  "/:id",
+  "/",
   validateLoggedIn,
   (req, res) => {
-    db.updateUserProfile(Number(req.params.id), req.body)
+    db.updateUserProfile(Number(req.token.subject), req.body)
       .then((result) => {
         if (result === 1) {
           res.status(202).send();
@@ -71,10 +71,10 @@ router.put(
 );
 
 router.delete(
-  "/:id",
+  "/",
   validateLoggedIn,
   (req, res) => {
-    db.removeUser(Number(req.params.id))
+    db.removeUser(Number(req.token.subject))
       .then((result) => {
         if (result === 1) {
           res.status(202).send();
