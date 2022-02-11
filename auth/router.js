@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../user/db");
 const bcrypt = require("bcryptjs");
-const router = express.Router();
+const router = express.Router();c
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets.js");
 
@@ -9,14 +9,14 @@ router.post("/register", (req, res) => {
   const user = req.body;
   const hash = bcrypt.hashSync(user.password, 14);
   user.password = hash;
-  db.insertUser(user)
+  db.insert(user)
     .then((id) => res.status(201).send())
     .catch((err) =>
       res.status(500).json({ error: `error registering user, ${err}` })
     );
 });
 
-// used to hash passwords in seeds
+//used to hash password in seeds
 // router.post("/password", (req, res) => {
 //   const user = req.body;
 //   const hash = bcrypt.hashSync(user.password, 14);
@@ -50,5 +50,5 @@ function generateToken(user) {
   // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
-//Michelagelo_sBeard12345
+
 module.exports = router;
