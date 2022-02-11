@@ -8,6 +8,7 @@ module.exports = {
   getByEmail,
   insertUser,
   updateUserProfile,
+  removeUser,
 };
 
 function getFollowersByUserId(id) {
@@ -51,4 +52,8 @@ function getAll() {
 
 function getById(id) {
   return db("user").where({ id }).first();
+}
+
+function removeUser(id) {
+  return db("user").where({ id }).del();
 }

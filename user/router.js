@@ -70,6 +70,24 @@ router.put(
   }
 );
 
+router.delete(
+  "/:id",
+  validateLoggedIn,
+  (req, res) => {
+    db.removeUser(Number(req.params.id))
+      .then((result) => {
+        if (result === 1) {
+          res.status(202).send();
+        } else {
+          res.status(500).json({ error: "error deleting profile" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "error connecting to database" });
+      });
+  }
+);
+
 router.get("/:id", (req, res) => {
   db.getById(req.params.id)
     .then((result) => {
