@@ -1,9 +1,6 @@
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets");
 
-
-
-
 const validateLoggedIn = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
@@ -18,8 +15,7 @@ const validateLoggedIn = (req, res, next) => {
   } else {
     res.status(401).send();
   }
-}
-
+};
 
 // I don't think we need this middleware?
 // const validateUserEditSelf = (req, res, next) => {
@@ -31,5 +27,5 @@ const validateLoggedIn = (req, res, next) => {
 
 module.exports = {
   validateLoggedIn,
-  validateUserEditSelf,
-}
+  // validateUserEditSelf,
+};

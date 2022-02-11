@@ -6,8 +6,8 @@ exports.up = function (knex) {
       tbl.string("name", 128).notNullable();
       tbl.string("password", 128).notNullable();
       tbl.string("zip_code", 128);
-      tbl.boolean("admin", 128);
-      tbl.boolean("moderator", 128);
+      tbl.boolean("admin").defaultTo(false);
+      tbl.boolean("moderator").defaultTo(false);
     })
     .createTable("wine", (tbl) => {
       tbl.increments();
@@ -35,7 +35,7 @@ exports.up = function (knex) {
         .onUpdate("CASCADE");
       tbl.primary(["user_id", "wine_id"]);
       tbl.boolean("favorite");
-      tbl.boolean("try", 128);
+      tbl.boolean("try");
       tbl.integer("rating").unsigned();
       tbl.string("notes", 128);
       tbl.boolean("drunk", 128);

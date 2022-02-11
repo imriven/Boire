@@ -5,16 +5,6 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets.js");
 
-router.post("/register", (req, res) => {
-  const user = req.body;
-  const hash = bcrypt.hashSync(user.password, 14);
-  user.password = hash;
-  db.insertUser(user)
-    .then((id) => res.status(201).send())
-    .catch((err) =>
-      res.status(500).json({ error: `error registering user, ${err}` })
-    );
-});
 
 //used to hash password in seeds
 // router.post("/password", (req, res) => {
@@ -23,7 +13,8 @@ router.post("/register", (req, res) => {
 //   res.status(200).json({ hash });
 // });
 
-router.post("/login", (req, res) => {
+//login - create token
+router.post("/", (req, res) => {
   const credentials = req.body;
   db.getByEmail(credentials.email)
     .then((user) => {

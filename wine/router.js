@@ -2,9 +2,9 @@ const router = require("express").Router();
 const db = require("./db");
 const {
   validateLoggedIn,
-} = require("../auth/middleware");
+} = require("../utils/middleware");
 
-//check
+
 router.post("/", validateLoggedIn, (req, res) => {
 const wine = req.body
   db.insertWine(wine)
@@ -17,12 +17,12 @@ const wine = req.body
     });
 });
 
-//check
+
 router.put(
-  "/",
+  "/:id",
   validateLoggedIn,
   (req, res) => {
-    db.updateWineProfile(Number(req.token.subject), req.body)
+    db.updateWineProfile(Number(req.params.id), req.body)
       .then((result) => {
         if (result === 1) {
           res.status(202).send();
@@ -36,12 +36,12 @@ router.put(
   }
 );
 
-//check
+
 router.delete(
-  "/",
+  "/:id",
   validateLoggedIn,
   (req, res) => {
-    db.removeWine(Number(req.token.subject))
+    db.removeWine(Number(req.params.id))
       .then((result) => {
         if (result === 1) {
           res.status(202).send();

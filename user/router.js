@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const db = require("./db");
+const bcrypt = require("bcryptjs");
 const {
   validateLoggedIn,
-} = require("../auth/middleware");
+} = require("../utils/middleware");
 
 router.get("/:id/wine", (req, res) => {
   db.getWineByUserId(req.params.id)
@@ -87,6 +88,19 @@ router.delete(
       });
   }
 );
+
+router.post("/", (req, res) => {
+  const user = req.body;
+  const hash = bcrypt.hashSync(user.password, 14);
+  user.password = hash;
+  db.insertUser(user)
+    .then((id) => res.status(201).send())
+    .catch((err) =>
+      res.status(500).json({ error: `error registering user, ${err}` })
+    );
+});
+
+
 
 router.get("/:id", (req, res) => {
   db.getById(req.params.id)
