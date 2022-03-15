@@ -9,13 +9,23 @@ module.exports = {
   insertUser,
   updateUserProfile,
   removeUser,
+  insertFollow,
+  removeFollow,
 };
 
 function getFollowersByUserId(id) {
-  return db("following as f") 
+  return db("following as f")
     .join("user as u", "u.id", "f.following_id")
-    .select("u.id", "u.first_name")
+    .select("u.id", "u.name")
     .where("f.follower_id", id);
+}
+
+function insertFollow(user, following) {
+  return db("following").insert({ follower_id: user, following_id: following });
+}
+
+function removeFollow(user, following) {
+  return db("following").where({ follower_id: user, following_id: following }).del();
 }
 
 function getByEmail(email) {
@@ -36,7 +46,6 @@ function getWineByUserId(id) {
 //     .select("fields from second table.*")
 //     .where("j.id", id);
 // }
-
 
 function insertUser(user) {
   return db("user").insert(user);

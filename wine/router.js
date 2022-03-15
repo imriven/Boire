@@ -1,59 +1,67 @@
 const router = require("express").Router();
+const cloudinary = require("cloudinary").v2;
 const db = require("./db");
-const {
-  validateLoggedIn,
-} = require("../utils/middleware");
-
+const { validateLoggedIn } = require("../utils/middleware");
 
 router.post("/", validateLoggedIn, (req, res) => {
-const wine = req.body
+  const wine = req.body;
   db.insertWine(wine)
     .then((result) => {
       res.status(201).send();
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       res.status(500).json({ error: "error connecting to database" });
     });
 });
 
+router.post("/upload-image", validateLoggedIn, (req, res) => {
+  const data = {
+    image: request.body.image,
+  };
 
-router.put(
-  "/:id",
-  validateLoggedIn,
-  (req, res) => {
-    db.updateWineProfile(Number(req.params.id), req.body)
-      .then((result) => {
-        if (result === 1) {
-          res.status(202).send();
-        } else {
-          res.status(500).json({ error: "Error Updating Wine Profile" });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ error: "error connecting to database" });
+  // upload image here
+  cloudinary.uploader.upload(data.image)
+  .then((result) => {
+      response.status(200).send({
+        message: "success",
+        result,
       });
-  }
-);
-
-
-router.delete(
-  "/:id",
-  validateLoggedIn,
-  (req, res) => {
-    db.removeWine(Number(req.params.id))
-      .then((result) => {
-        if (result === 1) {
-          res.status(202).send();
-        } else {
-          res.status(500).json({ error: "error deleting wine profile" });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ error: "error connecting to database" });
+    }).catch((error) => {
+      response.status(500).send({
+        message: "failure",
+        error,
       });
-  }
-);
+    });
+});
+
+router.put("/:id", validateLoggedIn, (req, res) => {
+  db.updateWineProfile(Number(req.params.id), req.body)
+    .then((result) => {
+      if (result === 1) {
+        res.status(202).send();
+      } else {
+        res.status(500).json({ error: "Error Updating Wine Profile" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "error connecting to database" });
+    });
+});
+
+router.delete("/:id", validateLoggedIn, (req, res) => {
+  db.removeWine(Number(req.params.id))
+    .then((result) => {
+      if (result === 1) {
+        res.status(202).send();
+      } else {
+        res.status(500).json({ error: "error deleting wine profile" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "error connecting to database" });
+    });
+});
 
 router.get("/:id", (req, res) => {
   db.getById(req.params.id)

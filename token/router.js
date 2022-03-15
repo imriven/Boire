@@ -30,8 +30,10 @@ router.post("/", (req, res) => {
 
 function generateToken(user) {
   const payload = {
-    subject: user.id, // sub in payload is what the token is about
+    id: user.id, // sub in payload is what the token is about
     email: user.email,
+    admin: user.admin,
+    moderator: user.moderator
   };
 
   const options = {

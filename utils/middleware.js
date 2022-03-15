@@ -17,15 +17,13 @@ const validateLoggedIn = (req, res, next) => {
   }
 };
 
-// I don't think we need this middleware?
-// const validateUserEditSelf = (req, res, next) => {
-//   if (req.token.subject !== Number(req.params.id)) {
-//     return res.status(403).json({ error: "User only able to edit themselves" });
-//   }
-//   next();
-// };
+const denyEscalation = (req, res, next) => {
+  if (!(req.token.admin && (req.body.admin || req.body.moderator)))  {
+    
+  } 
+}
 
 module.exports = {
   validateLoggedIn,
-  // validateUserEditSelf,
+  
 };
