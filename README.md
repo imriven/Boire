@@ -23,3 +23,9 @@ To _start_ it back up again:
 `$ docker ps -a` (then note down the first couple of characters from the container id)
 
 `$ docker start <id_characters>`
+
+
+After setting up docker container
+run migrations and seeds.
+
+set 

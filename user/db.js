@@ -3,6 +3,7 @@ const db = require("../config/dbConfig");
 module.exports = {
   getAll,
   getById,
+  getWinesByUserId,
   getWineByUserId,
   getFollowersByUserId,
   getByEmail,
@@ -11,6 +12,7 @@ module.exports = {
   removeUser,
   insertFollow,
   removeFollow,
+  upsertUserWine,
 };
 
 function getFollowersByUserId(id) {
@@ -25,18 +27,36 @@ function insertFollow(user, following) {
 }
 
 function removeFollow(user, following) {
-  return db("following").where({ follower_id: user, following_id: following }).del();
+  return db("following")
+    .where({ follower_id: user, following_id: following })
+    .del();
 }
 
 function getByEmail(email) {
   return db("user").where({ email }).first();
 }
 
-function getWineByUserId(id) {
+function getWinesByUserId(id) {
   return db("user_wine as u")
     .join("wine as w", "w.id", "u.wine_id")
     .select("w.*")
     .where("u.user_id", id);
+}
+
+function getWineByUserId(uid, wid) {
+  return db("user_wine as u")
+    .join("wine as w", "w.id", "u.wine_id")
+    .select("u.*")
+    .where({ "u.user_id": uid, "u.wine_id": wid })
+    .first();
+}
+
+function upsertUserWine(userWine) {
+  return db("user_wine")
+    .insert(userWine)
+    .onConflict(["user_id", "wine_id"])
+    .merge()
+    .returning("*");
 }
 
 //sql quick guide

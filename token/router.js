@@ -5,7 +5,6 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets.js");
 
-
 //used to hash password in seeds
 // router.post("/password", (req, res) => {
 //   const user = req.body;
@@ -25,7 +24,9 @@ router.post("/", (req, res) => {
         res.status(200).json({ token });
       }
     })
-    .catch((err) => res.status(500).json({ error: "error logging in" }));
+    .catch((err) =>
+      res.status(500).json({ error: `error logging in: ${err}` })
+    );
 });
 
 function generateToken(user) {
@@ -33,7 +34,7 @@ function generateToken(user) {
     id: user.id, // sub in payload is what the token is about
     email: user.email,
     admin: user.admin,
-    moderator: user.moderator
+    moderator: user.moderator,
   };
 
   const options = {

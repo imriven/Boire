@@ -3,8 +3,23 @@ const db = require("./db");
 const bcrypt = require("bcryptjs");
 const { validateLoggedIn } = require("../utils/middleware");
 
-router.get("/:id/wine", (req, res) => {
-  db.getWineByUserId(req.params.id)
+router.get("/:uid/wine/:wid", validateLoggedIn, (req, res) => {
+  db.getWineByUserId(Number(req.token.id), Number(req.params.wid))
+    .then((result) => {
+      console.log(result)
+      if (!result) {
+        res.status(404).json({ error: "No wines exist" });
+      } else {
+        res.status(200).json(result);
+      }
+    })
+    .catch((err) =>
+      res.status(500).json({ error: `Error connecting to database, ${err}` })
+    );
+});
+
+router.get("/:uid/wine", validateLoggedIn, (req, res) => {
+  db.getWinesByUserId(Number(req.token.id))
     .then((result) => {
       if (!result) {
         res.status(404).json({ error: "No wines exist" });
@@ -15,6 +30,23 @@ router.get("/:id/wine", (req, res) => {
     .catch((err) =>
       res.status(500).json({ error: `Error connecting to database, ${err}` })
     );
+});
+
+
+router.put("/wine/:wid", validateLoggedIn, (req, res) => {
+  req.body.user_id = Number(req.token.id);
+  db.upsertUserWine(req.body)
+    .then((result) => {
+      console.log(result)
+      // if (result === 1) {
+        res.status(202).send();
+      // } else {
+      //   res.status(500).json({ error: "error saving user wine" });
+      // }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "error connecting to database" });
+    });
 });
 
 router.get("/following", validateLoggedIn, (req, res) => {
@@ -51,7 +83,7 @@ router.get("/following", validateLoggedIn, (req, res) => {
 //   }
 // );
 
-router.post("/connection/:id", validateLoggedIn, (req, res) => {
+router.post("/connection/:uid", validateLoggedIn, (req, res) => {
   db.insertFollow(req.token.id, req.params.id)
     .then(() => res.status(201).send())
     .catch((err) =>
@@ -87,7 +119,7 @@ router.delete("/", validateLoggedIn, (req, res) => {
     });
 });
 
-router.delete("/connection/:id", validateLoggedIn, (req, res) => {
+router.delete("/connection/:uid", validateLoggedIn, (req, res) => {
   db.removeFollow(Number(req.token.id), Number(req.params.id))
     .then((result) => {
       if (result === 1) {
@@ -112,7 +144,7 @@ router.post("/", (req, res) => {
     );
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:uid", (req, res) => {
   db.getById(req.params.id)
     .then((result) => {
       if (!result) {
